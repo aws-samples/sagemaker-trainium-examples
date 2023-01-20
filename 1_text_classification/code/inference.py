@@ -1,3 +1,18 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 import os
 import json
 import torch
@@ -11,8 +26,6 @@ def model_fn(model_dir):
     
     model_dir = '/opt/ml/model/'
     dir_contents = os.listdir(model_dir)
-    print("files in directory ", dir_contents)
-
 
     tokenizer = AutoTokenizer.from_pretrained(model_dir,local_files_only=True)
     model = AutoModelForSequenceClassification.from_pretrained(
@@ -60,7 +73,6 @@ def predict_fn(input_data, models):
     out_dict = {}
     out_dict["text"] = sequence_0
     out_dict["prediction"]= classes[review_prediction]
-    #out_str = 'Bert model predicts that {} is {}'.format(sequence_0, classes[review_prediction])
     
     return out_dict
 
