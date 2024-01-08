@@ -8,9 +8,9 @@ This repository contains examples for running Deep Learning training jobs using 
 
 2. [Pretrain BERT using Wiki Data](https://github.com/aws-samples/sagemaker-trainium-examples/blob/main/2_pretraining_bert/Pretrain%20BERT%20Model%20using%20Wiki%20Dataset.ipynb) - The example can be used to Pretrain BERT model using AWS Trainium. We will use wiki data to run the pretraining.
 
-3. [Pretrain Llama 2 70b using Wikicorpus](https://github.com/aws-samples/sagemaker-trainium-examples/blob/main/2_pretraining_bert/Pretrain%20BERT%20Model%20using%20Wiki%20Dataset.ipynb) - The example helps to pretrain llama2 models using NeuronX distributed library. 
+3. [Pretrain Llama 2 70b using Wikicorpus](https://github.com/aws-samples/sagemaker-trainium-examples/blob/main/3_llama2_llm_training/1_llama2_70b_pretraining/1.%20Train_llama2_70b.ipynb) - The example helps to pretrain llama2 models using NeuronX distributed library. 
 
-4. [Pretrain/Fine tune Llama using Wiki Data](https://github.com/aws-samples/sagemaker-trainium-examples/blob/main/2_pretraining_bert/Pretrain%20BERT%20Model%20using%20Wiki%20Dataset.ipynb) - The example can be used to pretrain/fine tune llama2 7b model using Neuronx nemo megatron library.
+4. [Pretrain/Fine tune Llama using Wiki Data](https://github.com/aws-samples/sagemaker-trainium-examples/tree/main/3_llama2_llm_training/2_llama2_7b_nemo_megatron) - The example can be used to pretrain/fine tune llama2 7b model using Neuronx nemo megatron library.
 
 
 
