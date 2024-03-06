@@ -6,6 +6,10 @@ import torch_xla.utils.serialization as xser
 
 from training_utils import create_partition
 
+from transformers.models.llama.modeling_llama import LlamaForCausalLM
+import torch
+import logging
+
 
 def merge_llama_tp_checkpoints(args):
     full_model = {}
@@ -109,7 +113,7 @@ def translate_llama_full_state_dict_to_tp(full_state, tp_size, tp_rank, pp_size,
 
 # Save Load Entries
 def load_full(args):
-    full_state = torch.load(args.input_dir)
+    full_state = torch.load(os.path.join(args.input_dir,"llama_weights.pt"))
     return full_state
 
 def load_partial_xser(args, tp_rank, pp_rank):
@@ -175,7 +179,9 @@ def convert_to_full_model(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input_dir", type=str, required=True, help="Path to input model/weights")
+    parser.add_argument("--access_token",type=str,default=None,help="Huggingface access token")
+    parser.add_argument("--model_name",type=str,default="meta-llama/Llama-2-7b-hf")
+    parser.add_argument("--input_dir", type=str, default="/tmp",help="Path to input model/weights")
     parser.add_argument("--output_dir", type=str, required=True, help="Path to save converted model/weights")
     parser.add_argument("--model_key", type=str, default="model", help="Key of the model state dict in the checkpoint object")
     parser.add_argument("--tp_size", type=int, default=1, help="Tensor Parallel degree for the model")
@@ -189,7 +195,19 @@ if __name__ == "__main__":
     parser.add_argument("--convert_to_full_model", action="store_true", help="Convert sharded model to full model")
 
     args, _ = parser.parse_known_args()
+
     if args.convert_from_full_model:
+        logging.info(f"Loading Model")
+        from huggingface_hub.hf_api import HfFolder;
+        HfFolder.save_token(args.access_token)
+
+
+        #model = LlamaForCausalLM.from_pretrained(low_cpu_mem_usage=True)
+        model = LlamaForCausalLM.from_pretrained(args.model_name,low_cpu_mem_usage =True,cache_dir="/opt/ml/sagemaker/warmpoolcache",token=args.access_token,torch_dtype=torch.bfloat16)
+
+        logging.info(f"Saving Model in /tmp")
+
+        torch.save(model.state_dict(), f'/tmp/llama_weights.pt')
         convert_from_full_model(args)
     elif args.convert_to_full_model:
         convert_to_full_model(args)
